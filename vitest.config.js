@@ -4,5 +4,10 @@ export default defineConfig({
   test: {
     globals: true,
     setupFiles: ['dotenv/config'],
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
   },
 });
