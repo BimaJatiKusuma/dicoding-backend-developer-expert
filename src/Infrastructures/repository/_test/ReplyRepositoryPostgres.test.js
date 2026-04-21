@@ -29,7 +29,7 @@ describe('ReplyRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId: 'thread-123', owner: 'user-123' });
       
       const newReply = new NewReply({ content: 'sebuah balasan' });
-      const fakeIdGenerator = () => '123'; // stub
+      const fakeIdGenerator = () => '123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action

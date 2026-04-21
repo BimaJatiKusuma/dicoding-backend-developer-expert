@@ -23,20 +23,13 @@ describe('GetAuthenticationUseCase', () => {
     const mockPasswordHash = new PasswordHash();
 
     // Mocking
-    mockUserRepository.getPasswordByUsername = vi.fn()
-      .mockImplementation(() => Promise.resolve('encrypted_password'));
-    mockPasswordHash.comparePassword = vi.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockAuthenticationTokenManager.createAccessToken = vi.fn()
-      .mockImplementation(() => Promise.resolve(mockedAuthentication.accessToken));
-    mockAuthenticationTokenManager.createRefreshToken = vi.fn()
-      .mockImplementation(() => Promise.resolve(mockedAuthentication.refreshToken));
-    mockUserRepository.getIdByUsername = vi.fn()
-      .mockImplementation(() => Promise.resolve('user-123'));
-    mockAuthenticationRepository.addToken = vi.fn()
-      .mockImplementation(() => Promise.resolve());
+    mockUserRepository.getPasswordByUsername = vi.fn().mockImplementation(() => Promise.resolve('encrypted_password'));
+    mockPasswordHash.comparePassword = vi.fn().mockImplementation(() => Promise.resolve());
+    mockAuthenticationTokenManager.createAccessToken = vi.fn().mockImplementation(() => Promise.resolve(mockedAuthentication.accessToken));
+    mockAuthenticationTokenManager.createRefreshToken = vi.fn().mockImplementation(() => Promise.resolve(mockedAuthentication.refreshToken));
+    mockUserRepository.getIdByUsername = vi.fn().mockImplementation(() => Promise.resolve('user-123'));
+    mockAuthenticationRepository.addToken = vi.fn().mockImplementation(() => Promise.resolve());
 
-    // create use case instance
     const loginUserUseCase = new LoginUserUseCase({
       userRepository: mockUserRepository,
       authenticationRepository: mockAuthenticationRepository,

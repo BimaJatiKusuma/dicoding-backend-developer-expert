@@ -44,7 +44,7 @@ describe('RefreshAuthenticationUseCase', () => {
       .mockImplementation(() => Promise.resolve({ username: 'dicoding', id: 'user-123' }));
     mockAuthenticationTokenManager.createAccessToken = vi.fn()
       .mockImplementation(() => Promise.resolve('some_new_access_token'));
-    // Create the use case instace
+    
     const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase({
       authenticationRepository: mockAuthenticationRepository,
       authenticationTokenManager: mockAuthenticationTokenManager,
