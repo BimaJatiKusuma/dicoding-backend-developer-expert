@@ -6,9 +6,6 @@ import PasswordHash from '../../security/PasswordHash.js';
 import AddUserUseCase from '../AddUserUseCase.js';
 
 describe('AddUserUseCase', () => {
-  /**
-   * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
-   */
   it('should orchestrating the add user action correctly', async () => {
     // Arrange
     const useCasePayload = {
@@ -17,7 +14,7 @@ describe('AddUserUseCase', () => {
       fullname: 'Dicoding Indonesia',
     };
 
-    const mockRegisteredUser = new RegisteredUser({
+    const expectedRegisteredUser = new RegisteredUser({
       id: 'user-123',
       username: useCasePayload.username,
       fullname: useCasePayload.fullname,
@@ -32,8 +29,13 @@ describe('AddUserUseCase', () => {
       .mockImplementation(() => Promise.resolve());
     mockPasswordHash.hash = vi.fn()
       .mockImplementation(() => Promise.resolve('encrypted_password'));
+      
     mockUserRepository.addUser = vi.fn()
-      .mockImplementation(() => Promise.resolve(mockRegisteredUser));
+      .mockImplementation(() => Promise.resolve(new RegisteredUser({
+        id: 'user-123',
+        username: useCasePayload.username,
+        fullname: useCasePayload.fullname,
+      })));
 
     /** creating use case instance */
     const getUserUseCase = new AddUserUseCase({
@@ -45,12 +47,7 @@ describe('AddUserUseCase', () => {
     const registeredUser = await getUserUseCase.execute(useCasePayload);
 
     // Assert
-    expect(registeredUser).toStrictEqual(new RegisteredUser({
-      id: 'user-123',
-      username: useCasePayload.username,
-      fullname: useCasePayload.fullname,
-    }));
-
+    expect(registeredUser).toStrictEqual(expectedRegisteredUser);
     expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(useCasePayload.username);
     expect(mockPasswordHash.hash).toBeCalledWith(useCasePayload.password);
     expect(mockUserRepository.addUser).toBeCalledWith(new RegisterUser({
