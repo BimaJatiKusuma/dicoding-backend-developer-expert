@@ -9,5 +9,6 @@ export default defineConfig({
         singleThread: true,
       },
     },
+    fileParallelism: false
   },
 });

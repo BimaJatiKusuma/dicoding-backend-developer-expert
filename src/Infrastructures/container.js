@@ -248,7 +248,7 @@ container.register([
       dependencies: [
         { name: 'threadRepository', internal: ThreadRepository.name },
         { name: 'commentRepository', internal: CommentRepository.name },
-        { name: 'replyRepository', internal: ReplyRepository.name }, // Tambahan ini
+        { name: 'replyRepository', internal: ReplyRepository.name },
       ],
     },
   },
