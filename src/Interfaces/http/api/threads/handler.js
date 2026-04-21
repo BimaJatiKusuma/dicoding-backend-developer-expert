@@ -2,6 +2,10 @@ import AddThreadUseCase from '../../../../Applications/use_case/AddThreadUseCase
 import AddCommentUseCase from '../../../../Applications/use_case/AddCommentUseCase.js';
 import DeleteCommentUseCase from '../../../../Applications/use_case/DeleteCommentUseCase.js';
 import GetDetailThreadUseCase from '../../../../Applications/use_case/GetDetailThreadUseCase.js';
+import AddReplyUseCase from '../../../../Applications/use_case/AddReplyUseCase.js';
+import DeleteReplyUseCase from '../../../../Applications/use_case/DeleteReplyUseCase.js';
+
+
 
 class ThreadsHandler {
   constructor(container) {
@@ -11,6 +15,9 @@ class ThreadsHandler {
     this.postCommentHandler = this.postCommentHandler.bind(this);
     this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
     this.getDetailThreadHandler = this.getDetailThreadHandler.bind(this);
+
+    this.postReplyHandler = this.postReplyHandler.bind(this);
+    this.deleteReplyHandler = this.deleteReplyHandler.bind(this);
   }
 
   async postThreadHandler(req, res, next) {
@@ -54,5 +61,27 @@ class ThreadsHandler {
       res.json({ status: 'success', data: { thread } });
     } catch (error) { next(error); }
   }
+
+  async postReplyHandler(req, res, next) {
+  try {
+    const { id: owner } = req.auth;
+    const { threadId, commentId } = req.params;
+    const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
+    const addedReply = await addReplyUseCase.execute(req.body, threadId, commentId, owner);
+
+    res.status(201).json({ status: 'success', data: { addedReply } });
+  } catch (error) { next(error); }
+}
+
+async deleteReplyHandler(req, res, next) {
+  try {
+    const { id: owner } = req.auth;
+    const { threadId, commentId, replyId } = req.params;
+    const deleteReplyUseCase = this._container.getInstance(DeleteReplyUseCase.name);
+    await deleteReplyUseCase.execute(threadId, commentId, replyId, owner);
+
+    res.json({ status: 'success' });
+  } catch (error) { next(error); }
+}
 }
 export default ThreadsHandler;
