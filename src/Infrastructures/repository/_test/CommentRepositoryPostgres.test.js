@@ -83,4 +83,32 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0].is_delete).toEqual(true);
     });
   });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return comments correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        threadId: 'thread-123',
+        content: 'sebuah komentar',
+        owner: 'user-123',
+        date: '2026-01-01T00:00:00.000Z',
+        isDelete: false,
+      });
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+
+      // Assert
+      expect(comments).toHaveLength(1);
+      expect(comments[0].id).toEqual('comment-123');
+      expect(comments[0].username).toEqual('dicoding');
+      expect(comments[0].content).toEqual('sebuah komentar');
+      expect(comments[0].date).toEqual('2026-01-01T00:00:00.000Z');
+      expect(comments[0].is_delete).toEqual(false);
+    });
+  });
 });

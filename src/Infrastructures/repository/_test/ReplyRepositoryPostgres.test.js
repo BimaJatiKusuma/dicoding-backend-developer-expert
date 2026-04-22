@@ -115,4 +115,34 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies[0].is_delete).toEqual(true);
     });
   });
+
+  describe('getRepliesByThreadId function', () => {
+    it('should return replies correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId: 'thread-123', owner: 'user-123' });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        commentId: 'comment-123',
+        content: 'sebuah balasan',
+        owner: 'user-123',
+        date: '2026-01-01T00:00:00.000Z',
+        isDelete: false,
+      });
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesByThreadId('thread-123');
+
+      // Assert
+      expect(replies).toHaveLength(1);
+      expect(replies[0].id).toEqual('reply-123');
+      expect(replies[0].comment_id).toEqual('comment-123');
+      expect(replies[0].content).toEqual('sebuah balasan');
+      expect(replies[0].username).toEqual('dicoding');
+      expect(replies[0].date).toEqual('2026-01-01T00:00:00.000Z');
+      expect(replies[0].is_delete).toEqual(false);
+    });
+  });
 });
