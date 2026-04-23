@@ -24,7 +24,7 @@ jobs:
           npm install
           
           # Menjalankan migrasi database
-          npm run migrate
+          npm run migrate up
           
           # Restart aplikasi (Sesuaikan dengan cara Anda menjalankan Express, misal dengan PM2)
           pm2 restart forum-api
