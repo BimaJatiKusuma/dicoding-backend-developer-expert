@@ -36,5 +36,5 @@ jobs:
       - name: Restart Application
         run: |
           npm install -g pm2
-          pm2 restart forum-api
+          pm2 restart forum-api || pm2 start src/app.js --name forum-api
           
