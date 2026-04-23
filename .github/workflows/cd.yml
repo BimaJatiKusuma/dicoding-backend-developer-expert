@@ -15,7 +15,7 @@ jobs:
       - name: Deploy Aplikasi
         run: |
           # Alamat folder server
-          cd /home/blaze/lab-server/03-projects/dicoding/dicoding-backend-developer-expert 
+          cd lab-server/03-projects/dicoding/dicoding-backend-developer-expert 
           
           # Menarik kode terbaru
           git pull origin main
