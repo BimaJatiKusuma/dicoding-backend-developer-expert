@@ -8,17 +8,23 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    
+    runs-on: self-hosted 
+    
     steps:
-      - name: SSH and deploy to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd ~/path-to-your-app
-            git pull origin main
-            npm install
-            npm run migrate
-            pm2 restart forum-api
+      - name: Deploy Aplikasi
+        run: |
+          # Alamat folder server
+          cd /home/blaze/lab-server/03-projects/dicoding/dicoding-backend-developer-expert 
+          
+          # Menarik kode terbaru
+          git pull origin main
+          
+          # Install dependencies
+          npm install
+          
+          # Menjalankan migrasi database
+          npm run migrate
+          
+          # Restart aplikasi (Sesuaikan dengan cara Anda menjalankan Express, misal dengan PM2)
+          pm2 restart forum-api
