@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - master
 
 jobs:
   test:
@@ -13,8 +12,8 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: developer
+          POSTGRES_PASSWORD: supersecretpassword
           POSTGRES_DB: forumapi_test
         ports:
           - 5432:5432
@@ -32,16 +31,6 @@ jobs:
           node-version: '21'
       - name: Install dependencies
         run: npm install
-      - name: Setup Environment Variables
-        run: |
-          echo "PGHOST=localhost" >> $GITHUB_ENV
-          echo "PGUSER=postgres" >> $GITHUB_ENV
-          echo "PGPASSWORD=password" >> $GITHUB_ENV
-          echo "PGDATABASE=forumapi_test" >> $GITHUB_ENV
-          echo "PGPORT=5432" >> $GITHUB_ENV
-          echo "ACCESS_TOKEN_KEY=rahasia_access" >> $GITHUB_ENV
-          echo "REFRESH_TOKEN_KEY=rahasia_refresh" >> $GITHUB_ENV
-          echo "ACCCESS_TOKEN_AGE=1800" >> $GITHUB_ENV
       - name: Run Migrations
         run: npm run migrate:test
       - name: Run Linter

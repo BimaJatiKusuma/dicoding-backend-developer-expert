@@ -4,22 +4,28 @@ on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Menggunakan runner yang berjalan di server Ubuntu
+    runs-on: self-hosted
+    
     steps:
-      - name: Deploy to Ubuntu Server via SSH
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /path/to/your/forum-api
-            git pull origin main
-            npm install
-            npm run migrate
-            # Restart aplikasi (sesuaikan jika menggunakan PM2 atau Docker)
-            pm2 restart forum-api
+          node-version: '22'
+          
+      - name: Install Dependencies & Migrate
+        run: |
+          npm install
+          npm run migrate
+          
+      - name: Restart Application
+        run: |
+          # Jika Anda menjalankan aplikasi langsung dengan PM2 di host:
+          pm2 restart forum-api
+          
