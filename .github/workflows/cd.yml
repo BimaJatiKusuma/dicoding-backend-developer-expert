@@ -36,5 +36,6 @@ jobs:
       - name: Restart Application
         run: |
           # Jika Anda menjalankan aplikasi langsung dengan PM2 di host:
+          npm install -g pm2
           pm2 restart forum-api
           
