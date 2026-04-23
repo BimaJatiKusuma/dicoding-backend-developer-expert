@@ -8,23 +8,18 @@ on:
 
 jobs:
   deploy:
-    
-    runs-on: self-hosted 
-    
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy Aplikasi
-        run: |
-          # Alamat folder server
-          cd lab-server/03-projects/dicoding/dicoding-backend-developer-expert 
-          
-          # Menarik kode terbaru
-          git pull origin main
-          
-          # Install dependencies
-          npm install
-          
-          # Menjalankan migrasi database
-          npm run migrate up
-          
-          # Restart aplikasi (Sesuaikan dengan cara Anda menjalankan Express, misal dengan PM2)
-          pm2 restart forum-api
+      - name: Deploy to Ubuntu Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /path/to/your/forum-api
+            git pull origin main
+            npm install
+            npm run migrate
+            # Restart aplikasi (sesuaikan jika menggunakan PM2 atau Docker)
+            pm2 restart forum-api

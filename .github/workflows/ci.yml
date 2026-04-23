@@ -9,14 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
-    # Menjalankan PostgreSQL sebagai service lokal di runner
     services:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: developer
-          POSTGRES_PASSWORD: supersecretpassword
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
           POSTGRES_DB: forumapi_test
         ports:
           - 5432:5432
@@ -28,23 +26,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          
+          node-version: '21'
       - name: Install dependencies
         run: npm install
-        
-      - name: Run migrations
+      - name: Setup Environment Variables
+        run: |
+          echo "PGHOST=localhost" >> $GITHUB_ENV
+          echo "PGUSER=postgres" >> $GITHUB_ENV
+          echo "PGPASSWORD=password" >> $GITHUB_ENV
+          echo "PGDATABASE=forumapi_test" >> $GITHUB_ENV
+          echo "PGPORT=5432" >> $GITHUB_ENV
+          echo "ACCESS_TOKEN_KEY=rahasia_access" >> $GITHUB_ENV
+          echo "REFRESH_TOKEN_KEY=rahasia_refresh" >> $GITHUB_ENV
+          echo "ACCCESS_TOKEN_AGE=1800" >> $GITHUB_ENV
+      - name: Run Migrations
         run: npm run migrate:test
-        env:
-          PGHOST_TEST: localhost
-          PGUSER_TEST: developer
-          PGDATABASE_TEST: forumapi_test
-          PGPASSWORD_TEST: supersecretpassword
-          PGPORT_TEST: 5432
-          
-      - name: Run tests
+      - name: Run Linter
+        run: npm run lint
+      - name: Run Tests with Coverage
         run: npm run test:coverage
