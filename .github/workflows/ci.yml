@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run Migrations
-        run: npm run migrate:test
+        run: npm run migrate:test up
       - name: Run Linter
         run: npm run lint
       - name: Run Tests with Coverage
