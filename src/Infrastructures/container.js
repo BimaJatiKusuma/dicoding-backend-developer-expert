@@ -290,14 +290,15 @@ container.register([
       ],
     },
   },
-  {
-    key: 'ToggleLikeCommentUseCase', // Atau ToggleLikeCommentUseCase.name jika Anda menggunakan cara itu
+{
+    key: 'ToggleLikeCommentUseCase',
     Class: ToggleLikeCommentUseCase,
     parameter: {
+      injectType: 'destructuring', // <-- Tambahkan ini
       dependencies: [
-        { internal: ThreadRepository.name },
-        { internal: CommentRepository.name },
-        { internal: LikeRepository.name },
+        { name: 'threadRepository', internal: ThreadRepository.name }, // <-- Tambahkan name
+        { name: 'commentRepository', internal: CommentRepository.name }, // <-- Tambahkan name
+        { name: 'likeRepository', internal: LikeRepository.name }, // <-- Tambahkan name
       ],
     },
   },
