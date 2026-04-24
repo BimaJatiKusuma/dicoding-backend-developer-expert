@@ -348,8 +348,8 @@ describe('HTTP server', () => {
 
       // Assert
       expect(response.status).toEqual(200);
-      // SENGAJA DISALAHKAN UNTUK MENDAPATKAN SKENARIO GAGAL DI CI
-      expect(response.text).toEqual('apiforum is NOT running'); 
+      
+      expect(response.text).toEqual('apiforum is running'); 
     });
   });
 });
