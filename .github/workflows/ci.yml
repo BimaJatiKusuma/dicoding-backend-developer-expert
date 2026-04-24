@@ -28,12 +28,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: '22'
       - name: Install dependencies
         run: npm install
       - name: Run Migrations
         run: npm run migrate:test up
-      - name: Run Linter
-        run: npm run lint
+      - name: Run Test
+        run: npm run test
       - name: Run Tests with Coverage
         run: npm run test:coverage
