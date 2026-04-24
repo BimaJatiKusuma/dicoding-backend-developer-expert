@@ -15,8 +15,7 @@ describe('AddThreadUseCase', () => {
     
     const expectedAddedThread = new AddedThread({
       id: 'thread-123',
-      // title: useCasePayload.title,
-      title: 'TITLE SALAH',
+      title: useCasePayload.title,
       owner,
     });
 
