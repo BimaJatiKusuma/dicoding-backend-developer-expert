@@ -39,6 +39,10 @@ import ReplyRepositoryPostgres from './repository/ReplyRepositoryPostgres.js';
 import AddReplyUseCase from '../Applications/use_case/AddReplyUseCase.js';
 import DeleteReplyUseCase from '../Applications/use_case/DeleteReplyUseCase.js';
 
+import LikeRepository from '../Domains/likes/LikeRepository.js';
+import LikeRepositoryPostgres from './repository/LikeRepositoryPostgres.js';
+import ToggleLikeCommentUseCase from '../Applications/use_case/ToggleLikeCommentUseCase.js';
+
 // creating container
 const container = createContainer();
 
@@ -114,6 +118,16 @@ container.register([
   {
     key: ReplyRepository.name,
     Class: ReplyRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        { concrete: pool },
+        { concrete: nanoid },
+      ],
+    },
+  },
+  {
+    key: LikeRepository.name,
+    Class: LikeRepositoryPostgres,
     parameter: {
       dependencies: [
         { concrete: pool },
@@ -273,6 +287,17 @@ container.register([
         { name: 'replyRepository', internal: ReplyRepository.name },
         { name: 'commentRepository', internal: CommentRepository.name },
         { name: 'threadRepository', internal: ThreadRepository.name },
+      ],
+    },
+  },
+  {
+    key: 'ToggleLikeCommentUseCase', // Atau ToggleLikeCommentUseCase.name jika Anda menggunakan cara itu
+    Class: ToggleLikeCommentUseCase,
+    parameter: {
+      dependencies: [
+        { internal: ThreadRepository.name },
+        { internal: CommentRepository.name },
+        { internal: LikeRepository.name },
       ],
     },
   },
